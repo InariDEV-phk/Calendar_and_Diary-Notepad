@@ -30,6 +30,7 @@ let diaryDate = null;
     <button id="next-btn">Next</button>
     <button id="save-note">Save</button>
   `;
+    
 
     const saveBtn = document.getElementById('save-note');
     const closeBtn = document.getElementById('close-diary');
@@ -46,21 +47,59 @@ let diaryDate = null;
   
     closeBtn.onclick = () => {
       notebook.style.display = "none";
+      const allDays = days.querySelectorAll('div.active');
+      allDays.forEach(day => day.classList.remove('active'));
+
+      diaryDate = null;
+      
       };
 
     prevBtn.onclick = () => {
       const prevDate = new Date(diaryDate);
       prevDate.setDate(diaryDate.getDate() - 1);
+
+      diaryDate = prevDate;
+
+      currentMonth = prevDate.getMonth();
+      currentYear = prevDate.getFullYear();
+
+      renderCalendar(currentMonth, currentYear);
+
       openNotebook(prevDate);
+      updateActiveDay(prevDate)
     };
 
     nextBtn.onclick = () => {
       const nextDate = new Date(diaryDate);
       nextDate.setDate(diaryDate.getDate() + 1);
+      diaryDate = nextDate;
+
+      currentMonth = nextDate.getMonth()
+      currentYear = nextDate.getFullYear()
+
+      renderCalendar(currentMonth, currentYear);
+
       openNotebook(nextDate);
+      updateActiveDay(nextDate)
     };
 
+}
+
+  function updateActiveDay(date) {
+  // Remove a classe 'active' de todos os dias
+  const allDays = days.querySelectorAll('div');
+  allDays.forEach(day => day.classList.remove('active'));
+
+  // Formata a data para comparar com data dos dias
+  const targetDateStr = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+
+  // Procura o dia com data igual
+  const dayToActivate = Array.from(allDays).find(day => day.dataset.date === targetDateStr);
+
+  if (dayToActivate) {
+    dayToActivate.classList.add('active');
   }
+}
 
 function renderCalendar(month, year){
 
@@ -101,8 +140,14 @@ function renderCalendar(month, year){
     }
 
     dayDiv.addEventListener('click', () => {
-      diaryDate = new Date(year, month, day);
+      diaryDate = new Date(year, month, day);    
+      const allDays = days.querySelectorAll('div');
+      allDays.forEach(day => day.classList.remove('active'));  
+      dayDiv.classList.add('active');
       openNotebook(diaryDate);
+      updateActiveDay(date)
+
+
     });
 
     days.appendChild(dayDiv);
