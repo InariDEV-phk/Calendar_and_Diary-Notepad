@@ -90,7 +90,7 @@ body{
   transition: 0.5s;
 }
 
-.days div.today, #save-note {
+.days div.today, #save-note, #prev-btn, #next-btn {
   background-color: #4CAF50;
   color: white;
   font-weight: bold;
@@ -123,6 +123,19 @@ body{
   border: none;
   border-radius: 4px;
   
+}
+
+#prev-btn, #next-btn{
+  position: absolute;
+  height: 30px;
+  width: 50px;
+  border: none;
+  border-radius: 4px;
+  left: 15px;
+}
+
+#next-btn{
+  left: 80px;
 }
 
 .diary-header{

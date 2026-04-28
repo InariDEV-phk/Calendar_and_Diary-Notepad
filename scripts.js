@@ -7,6 +7,60 @@ const notebook = document.querySelector(".notebook")
 let currentDate = new Date()
 let currentMonth = currentDate.getMonth()
 let currentYear = currentDate.getFullYear();
+let diaryDate = null;
+
+  function openNotebook(date) {
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+
+  const dateKey = `note-${year}-${String(month + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  const savedNote = localStorage.getItem(dateKey) || '';
+
+  diaryDate = date; // atualiza a data global
+  notebook.style.display = "block";
+
+     notebook.innerHTML = `
+     <div class="diary-header">
+    <h2>Day ${day} / ${month + 1} / ${year}</h2>
+    <button id="close-diary">X</button>
+    </div>
+    <p contenteditable="true" id="note-text">${savedNote}</p>
+    <button id="prev-btn">Prev</button>
+    <button id="next-btn">Next</button>
+    <button id="save-note">Save</button>
+  `;
+
+    const saveBtn = document.getElementById('save-note');
+    const closeBtn = document.getElementById('close-diary');
+    const noteTextElem = document.getElementById('note-text');
+    const prevBtn = document.getElementById("prev-btn")
+    const nextBtn = document.getElementById("next-btn")
+
+    noteTextElem.focus();
+
+    saveBtn.onclick = () => {
+      localStorage.setItem(dateKey, noteTextElem.innerText);
+      alert('Saved');
+      };
+  
+    closeBtn.onclick = () => {
+      notebook.style.display = "none";
+      };
+
+    prevBtn.onclick = () => {
+      const prevDate = new Date(diaryDate);
+      prevDate.setDate(diaryDate.getDate() - 1);
+      openNotebook(prevDate);
+    };
+
+    nextBtn.onclick = () => {
+      const nextDate = new Date(diaryDate);
+      nextDate.setDate(diaryDate.getDate() + 1);
+      openNotebook(nextDate);
+    };
+
+  }
 
 function renderCalendar(month, year){
 
@@ -47,41 +101,12 @@ function renderCalendar(month, year){
     }
 
     dayDiv.addEventListener('click', () => {
-     notebook.style.display = "block"
-     const dateKey = `note-${year}-${month + 1}-${day}`;
-     const savedNote = localStorage.getItem(dateKey) || '';
-
-     notebook.innerHTML = `
-     <div class="diary-header">
-    <h2>Day ${day} / ${month + 1} / ${year}</h2>
-    <button id="close-diary">X</button>
-    </div>
-    <p contenteditable="true" id="note-text">${savedNote}</p>
-    <button id="save-note">Save</button>
-  `;
-
-    const saveBtn = document.getElementById('save-note');
-    const closeBtn = document.getElementById('close-diary');
-    const noteTextElem = document.getElementById('note-text');
-    
-    noteTextElem.focus();
-
-    saveBtn.onclick = () => {
-    localStorage.setItem(dateKey, noteTextElem.innerText);
-    alert('Saved');
-    };
-      
-    
-    // Aqui você pode abrir sua área para escrever o diário, passando essa data
-  
-      closeBtn.onclick = () => {
-    notebook.style.display = "none";
-       };
+      diaryDate = new Date(year, month, day);
+      openNotebook(diaryDate);
     });
+
     days.appendChild(dayDiv);
   }
-
-
 
   const totalDaysSoFar = firstDay + daysInMonth;
   const daysFromNextMonth = 42 - totalDaysSoFar;
