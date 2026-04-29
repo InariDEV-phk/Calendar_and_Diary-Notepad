@@ -25,7 +25,7 @@ let diaryDate = null;
     <h2>Day ${day} / ${month + 1} / ${year}</h2>
     <button id="close-diary">X</button>
     </div>
-    <p contenteditable="true" id="note-text">${savedNote}</p>
+    <p contenteditable="true" id="note-text"></p>
     <button id="prev-btn">Prev</button>
     <button id="next-btn">Next</button>
     <button id="save-note">Save</button>
@@ -38,10 +38,13 @@ let diaryDate = null;
     const prevBtn = document.getElementById("prev-btn")
     const nextBtn = document.getElementById("next-btn")
 
+    
+    noteTextElem.innerHTML = savedNote; // aqui o HTML é interpretado
     noteTextElem.focus();
 
+
     saveBtn.onclick = () => {
-      localStorage.setItem(dateKey, noteTextElem.innerText);
+      localStorage.setItem(dateKey, noteTextElem.innerHTML);
       alert('Saved');
       };
   
