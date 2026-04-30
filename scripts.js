@@ -21,14 +21,20 @@ let diaryDate = null;
   notebook.style.display = "block";
 
      notebook.innerHTML = `
-     <div class="diary-header">
-    <h2>Day ${day} / ${month + 1} / ${year}</h2>
-    <button id="close-diary">X</button>
+    <div class="diary-header">
+      <h2>Day ${day} / ${month + 1} / ${year}</h2>
+      <button id="close-diary">X</button>
     </div>
     <p contenteditable="true" id="note-text"></p>
     <button id="prev-btn">Prev</button>
     <button id="next-btn">Next</button>
     <button id="save-note">Save</button>
+    <div>
+      <button id="color1-btn"></button>
+      <button id="color2-btn"></button>
+      <button id="color3-btn"></button>
+    </div>
+    
   `;
     
 
@@ -37,6 +43,9 @@ let diaryDate = null;
     const noteTextElem = document.getElementById('note-text');
     const prevBtn = document.getElementById("prev-btn")
     const nextBtn = document.getElementById("next-btn")
+    const color1Btn = document.getElementById("color1-btn")
+    const color2Btn = document.getElementById("color2-btn")
+    const color3Btn = document.getElementById("color3-btn")
 
     
     noteTextElem.innerHTML = savedNote; // aqui o HTML é interpretado
@@ -56,6 +65,68 @@ let diaryDate = null;
       diaryDate = null;
       
       };
+
+      color1Btn.onclick = () =>{
+        const allDays = days.querySelectorAll('div');
+        const targetDateStr = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        const dayToActivate = Array.from(allDays).find(day => day.dataset.date === targetDateStr);
+        if (dayToActivate) {
+        dayToActivate.classList.remove('color2','color3')
+        dayToActivate.classList.toggle('color1');
+
+        const dayColors = JSON.parse(localStorage.getItem('dayColors')) || {};
+
+        if (dayToActivate.classList.contains('color1')) {
+            dayColors[targetDateStr] = 'color1';
+          } else {
+            // Remove a cor do localStorage se a classe foi removida
+            delete dayColors[targetDateStr];
+          }
+
+
+
+        localStorage.setItem('dayColors', JSON.stringify(dayColors));
+        }
+      }
+
+      color2Btn.onclick = () =>{
+        const allDays = days.querySelectorAll('div');
+        const targetDateStr = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        const dayToActivate = Array.from(allDays).find(day => day.dataset.date === targetDateStr);
+        if (dayToActivate) {
+        dayToActivate.classList.remove('color1','color3')
+        dayToActivate.classList.toggle('color2');
+
+        const dayColors = JSON.parse(localStorage.getItem('dayColors')) || {};
+        if (dayToActivate.classList.contains('color2')) {
+            dayColors[targetDateStr] = 'color2';
+          } else {
+            // Remove a cor do localStorage se a classe foi removida
+            delete dayColors[targetDateStr];
+          }
+        localStorage.setItem('dayColors', JSON.stringify(dayColors));
+        }
+      }
+
+      color3Btn.onclick = () =>{
+        const allDays = days.querySelectorAll('div');
+        const targetDateStr = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        const dayToActivate = Array.from(allDays).find(day => day.dataset.date === targetDateStr);
+        if (dayToActivate) {
+        dayToActivate.classList.remove('color1', 'color2')
+        dayToActivate.classList.toggle('color3');
+
+        const dayColors = JSON.parse(localStorage.getItem('dayColors')) || {};
+        if (dayToActivate.classList.contains('color3')) {
+            dayColors[targetDateStr] = 'color3';
+          } else {
+            // Remove a cor do localStorage se a classe foi removida
+            delete dayColors[targetDateStr];
+          }
+        localStorage.setItem('dayColors', JSON.stringify(dayColors));
+        }
+      }
+
 
     prevBtn.onclick = () => {
       const prevDate = new Date(diaryDate);
@@ -132,6 +203,13 @@ function renderCalendar(month, year){
     const dayDiv = document.createElement("div");
     dayDiv.textContent = day;
     dayDiv.dataset.date = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+    const dayColors = JSON.parse(localStorage.getItem('dayColors')) || {};
+    const dateStr = `${year}-${String(month + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+
+    if (dayColors[dateStr]) {
+      dayDiv.classList.add(dayColors[dateStr]);
+}
 
     const today = new Date();
     if (

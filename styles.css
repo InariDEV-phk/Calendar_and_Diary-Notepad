@@ -96,6 +96,7 @@ body{
   font-weight: bold;
 }
 
+
 .days div:hover{
   background-color: lightblue;
 }
@@ -103,6 +104,23 @@ body{
 .days div.active{
   background-color: coral;
 }
+
+.days div.color1{
+  outline: 2px solid yellow;
+  outline-offset: -2px;
+}
+
+.days div.color2{
+  outline: 2px solid rgb(212, 0, 255);
+  outline-offset: -2px;
+}
+
+.days div.color3{
+  outline: 2px solid rgb(255, 0, 0);
+  outline-offset: -2px;
+}
+
+
 
 /* Dias fora do mês podem ficar com estilo mais claro */
 .days div.outside {
@@ -129,7 +147,7 @@ body{
   
 }
 
-#prev-btn, #next-btn{
+#prev-btn, #next-btn, #color1-btn,#color2-btn, #color3-btn{
   position: absolute;
   height: 30px;
   width: 50px;
@@ -142,6 +160,25 @@ body{
   left: 80px;
 }
 
+#color1-btn{
+  left: 240px;
+  background-color: yellow;
+  width: 30px;
+}
+
+#color2-btn{
+  left: 280px;
+  background-color: rgb(212, 0, 255);
+  width: 30px;
+
+}
+
+#color3-btn{
+  left: 320px;
+  background-color: rgb(255, 0, 0);
+  width: 30px;
+}
+
 .diary-header{
   display: flex;
 }
@@ -152,6 +189,8 @@ body{
   width: 30px;
 
 }
+
+
 
 @media screen and (max-width:400px) {
 
