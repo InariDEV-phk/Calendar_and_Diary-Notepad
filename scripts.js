@@ -29,7 +29,7 @@ let diaryDate = null;
     <button id="prev-btn">Prev</button>
     <button id="next-btn">Next</button>
     <button id="save-note">Save</button>
-    <div>
+    <div class="color-buttons">
       <button id="color1-btn"></button>
       <button id="color2-btn"></button>
       <button id="color3-btn"></button>

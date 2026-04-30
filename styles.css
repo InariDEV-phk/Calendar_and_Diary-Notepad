@@ -213,10 +213,22 @@ body{
 
 .calendar, .notebook{
   width: 325px;
-  max-height: 80vh;
+  
   overflow-y: auto;
   margin-left: 32px;
 }
+
+.notebook{
+  height: 535px;
+
+}
+
+.color-buttons {
+    position: absolute;
+    left: -100px;
+    bottom: 40px;
+}
+
 
 .calendar header h2 {
   font-size: 18px;
